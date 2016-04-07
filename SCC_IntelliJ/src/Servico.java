@@ -8,9 +8,10 @@ public class Servico {
 	private double temp_ult, soma_temp_esp, soma_temp_serv; // Variáveis para cálculos estatísticos
 	private Vector<Cliente> fila; // Fila de espera do serviço
 	private Simulador s; // Referência para o simulador a que pertence o serviço
+	private int Atendedores
 
 	// Construtor
-    Servico (Simulador s){
+    Servico (Simulador s, int N_Atendedores){
     	this.s = s;
 		fila = new Vector <Cliente>(); // Cria fila de espera
 		estado = 0; // Livre
@@ -18,6 +19,7 @@ public class Servico {
 		atendidos = 0;  // Inicialização de variáveis
 		soma_temp_esp = 0;
 		soma_temp_serv = 0;
+		this.Atendedores = N_Atendedores;
 	}
 
 	// Método que insere cliente (c) no serviço

@@ -8,6 +8,7 @@ public class Simulador {
 	private int n_clientes;
 	// Serviço - pode haver mais do que um num simulador
     private Servico servico;
+    private Servico gasolina;
     // Lista de eventos - onde ficam registados todos os eventos que vão ocorrer na simulação
     // Cada simulador só tem uma
 	private ListaEventos lista;
@@ -21,7 +22,8 @@ public class Simulador {
 		// Inicialização do relógio de simulação
 		instante = 0;
 		// Criação do serviço
-		servico = new Servico (this);
+		servico = new Servico (this,1);
+        gasolina = new Servico (this,9);
 		// Criação da lista de eventos
 		lista = new ListaEventos(this);
 		// Agendamento da primeira chegada
@@ -59,7 +61,7 @@ public class Simulador {
 	public void executa (){
 		Evento e1;
 		// Enquanto não atender todos os clientes
-		while (servico.getAtendidos() < n_clientes){
+		while (instante < 10){
     	//	lista.print();  // Mostra lista de eventos - desnecessário; é apenas informativo
 			e1 = (Evento)(lista.removeFirst());  // Retira primeiro evento (é o mais iminente) da lista de eventos
 			instante = e1.getInstante();         // Actualiza relógio de simulação
