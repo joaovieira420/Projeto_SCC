@@ -1,11 +1,51 @@
-// Classe para geração de números aleatórios segundos várias distribuições
-// Apenas a distribuição exponencial negativa está definida
+// Classe para geraï¿½ï¿½o de nï¿½meros aleatï¿½rios segundos vï¿½rias distribuiï¿½ï¿½es
+// Apenas a distribuiï¿½ï¿½o exponencial negativa estï¿½ definida
 
 public class Aleatorio {
 
-	// Gera um número segundo uma distribuição exponencial negativa de média m
+	// Gera um numero segundo uma distribuicao exponencial negativa de media m
     static double exponencial (double m){
-		return (-m*Math.log(Math.random()));
+		return (-m*Math.log(RandomGenerator.rand64(0)));
+	}
+
+
+
+
+	public static synchronized double getGaussian(double mean, double stdDev) {
+		double spare = 0;
+		boolean isSpareReady = false;
+
+		if (isSpareReady) {
+			isSpareReady = false;
+			return spare * stdDev + mean;
+		} else {
+			double v1, v2, w;
+			do {
+				v1 = RandomGenerator.rand64(0) * 2 - 1;
+				v2 = RandomGenerator.rand64(1) * 2 - 1;
+				w = v1 * v1 + v2 * v2;
+			} while (w >= 1 || w == 0);
+			double mul = Math.sqrt(-2.0 * Math.log(w) / w);
+			spare = v2 * mul;
+			isSpareReady = true;
+			return mean + stdDev * v1 * mul;
+		}
+	}
+
+	//metodo que determina se o cliente Ã© do tipo 0 ou 1 (gasolina, gasoleo)
+	static int determinaTipoCliente() {
+		int tipo;
+		double rand;
+
+		rand = exponencial(80);
+
+		if (rand <= 0.2)
+			tipo = 1;
+		else {
+			tipo = 0;
+		}
+
+		return tipo;
 	}
 
 }

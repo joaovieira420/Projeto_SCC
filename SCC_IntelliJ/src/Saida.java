@@ -1,22 +1,22 @@
-// Classe que representa a saída de um cliente. Deriva de Evento.
+// Classe que representa a saï¿½da de um cliente. Deriva de Evento.
 
 public class Saida extends Evento {
 
 	//Construtor
-	Saida (double i, Simulador s){
-		super(i, s);
+	Saida (double i, Simulador s, Servico servico){
+		super(i, s, servico);
 	}
 
-	// Método que executa as acções correspondentes à saída de um cliente
-	void executa (Servico serv){
-		// Retira cliente do serviço
-        serv.removeServico();
+	// Metodo que executa as accoes correspondentes a saida de um cliente
+	void executa (){
+		// Retira cliente do serviï¿½o
+        servico.removeServico();
     }
 
-    // Método que descreve o evento.
+    // Metodo que descreve o evento.
     // Para ser usado na listagem da lista de eventos.
     public String toString(){
-         return "Saída em " + instante;
+         return "Saida em " + instante;
     }
 
 

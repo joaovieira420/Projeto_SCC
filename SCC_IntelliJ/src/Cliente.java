@@ -1,6 +1,12 @@
 // Classe que representa um cliente
-// Como são indistintos neste exemplo, está vazia
+// Como sï¿½o indistintos neste exemplo, esta vazia
 
 public class Cliente {
+    int tipo; //0 gasolina, 1 gasoleo
+    Cliente(){
+        tipo = Aleatorio.determinaTipoCliente();
+    }
+
+    public int getTipo() { return  tipo;}
 
 }

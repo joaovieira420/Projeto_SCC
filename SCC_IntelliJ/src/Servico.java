@@ -1,55 +1,70 @@
 import java.util.*;
 
-// Classe que representa um serviço com uma fila de espera associada
+// Classe que representa um servico com uma fila de espera associada
 
 public class Servico {
-	private int estado; // Variável que regista o estado do serviço: 0 - livre; 1 - ocupado
-    private int atendidos; // Número de clientes atendidos até ao momento
-	private double temp_ult, soma_temp_esp, soma_temp_serv; // Variáveis para cálculos estatísticos
-	private Vector<Cliente> fila; // Fila de espera do serviço
-	private Simulador s; // Referência para o simulador a que pertence o serviço
-	private int Atendedores
+	private int estado; // Variavel que regista o estado do servico vai de 0 a N numero de atendedores no serviÃ§o
+    private int atendidos; // Numero de clientes atendidos ate ao momento
+	private double temp_ult, soma_temp_esp, soma_temp_serv; // Variaveis para calculos estatasticos
+	private Vector<Cliente> fila; // Fila de espera do servico
+	private Simulador s; // Referencia para o simulador a que pertence o servico
+
+	private int nAtendedores; //variÃ¡vel que diz o numero de trabalhores num serviÃ§o
+
+	//tipo 0 para gasolina e gasoleo, 1 loja
+	private int tipo;
 
 	// Construtor
-    Servico (Simulador s, int N_Atendedores){
+    Servico (Simulador s, int nAtendedores, int tipo){
     	this.s = s;
 		fila = new Vector <Cliente>(); // Cria fila de espera
-		estado = 0; // Livre
-		temp_ult = s.getInstante(); // Tempo que passou desde o último evento. Neste caso 0, porque a simulação ainda não começou.
-		atendidos = 0;  // Inicialização de variáveis
+		estado = 0; // Livre IMPORTANTE IR ATE N
+		this.nAtendedores = nAtendedores;
+		temp_ult = s.getInstante(); // Tempo que passou desde o ultimo evento. Neste caso 0, porque a simulacao ainda nao comecou.
+		atendidos = 0;  // Inicializacao de variaveis
 		soma_temp_esp = 0;
 		soma_temp_serv = 0;
-		this.Atendedores = N_Atendedores;
+		this.tipo = tipo;
 	}
 
-	// Método que insere cliente (c) no serviço
+	// Metodo que insere cliente (c) no servico
     public void insereServico (Cliente c){
-		if (estado == 0) { // Se serviço livre,
+		if (estado < nAtendedores) { // Se servico livre, IR ATE N NAO Ã‰ BINARIO
 			estado ++;     // fica ocupado e
-			// agenda saída do cliente c para daqui a s.getMedia_serv() instantes
-			s.insereEvento (new Saida(s.getInstante()+s.getMedia_serv(), s));
+			// agenda saida do cliente c para daqui a s.getMedia_serv() instantes
+			if (tipo == 0) {
+				s.insereEvento(new Transfere(s.getInstante()+s.getMedia_serv(), s, s.getGasolina()));
+			} else {
+				s.insereEvento(new Saida(s.getInstante() + s.getMedia_serv(), s, s.getLoja()));
+			}
 		}
-		else fila.addElement(c); // Se serviço ocupado, o cliente vai para a fila de espera
+		else fila.addElement(c); // Se servico ocupado, o cliente vai para a fila de espera
 	}
 
-	// Método que remove cliente do serviço
-    public void removeServico (){
+	// Metodo que remove cliente do servico
+    public Cliente removeServico (){
+		Cliente c = null;
 		atendidos++; // Regista que acabou de atender + 1 cliente
-		if (fila.size()== 0) estado --; // Se a fila está vazia, liberta o serviço
-		else { // Se não,
-		     // vai buscar próximo cliente à fila de espera e
-			 // Cliente c = (Cliente)fila.firstElement();
-			 fila.removeElementAt(0);
-			 // agenda a sua saida para daqui a s.getMedia_serv() instantes
-			 s.insereEvento (new Saida(s.getInstante()+s.getMedia_serv(),s));
+		if (fila.size()== 0) estado --; // Se a fila esta vazia, liberta o servico
+		else { // Se nao,
+		     // vai buscar proximo cliente a fila de espera e
+			c = fila.firstElement();
+			fila.removeElementAt(0);
+			// agenda a sua saida para daqui a s.getMedia_serv() instantes
+			if (tipo == 0) {
+				s.insereEvento(new Transfere(s.getInstante()+s.getMedia_serv(), s, s.getGasolina()));
+			} else {
+				s.insereEvento(new Saida(s.getInstante() + s.getMedia_serv(), s, s.getLoja()));
+			}
 		}
+		return c;
 	}
 
-	// Método que calcula valores para estatísticas, em cada passo da simulação ou evento
+	// Metodo que calcula valores para estatisticas, em cada passo da simulacao ou evento
     public void act_stats(){
-        // Calcula tempo que passou desde o último evento
+        // Calcula tempo que passou desde o ultimo evento
 		double temp_desde_ult = s.getInstante() - temp_ult;
-		// Actualiza variável para o próximo passo/evento
+		// Actualiza variavel para o proximo passo/evento
 		temp_ult = s.getInstante();
 		// Contabiliza tempo de espera na fila
 		// para todos os clientes que estiveram na fila durante o intervalo
@@ -58,26 +73,26 @@ public class Servico {
 		soma_temp_serv += estado * temp_desde_ult;
 	}
 
-	// Método que calcula valores finais estatísticos
+	// Metodo que calcula valores finais estatï¿½sticos
     public void relat (){
-        // Tempo médio de espera na fila
+        // Tempo medio de espera na fila
 		double temp_med_fila = soma_temp_esp / (atendidos+fila.size());
-		// Comprimento médio da fila de espera
-		// s.getInstante() neste momento é o valor do tempo de simulação,
-        // uma vez que a simulação começou em 0 e este método só é chamdo no fim da simulação
+		// Comprimento medio da fila de espera
+		// s.getInstante() neste momento e o valor do tempo de simulacao,
+        // uma vez que a simulacao comecou em 0 e este metodo so e chamdo no fim da simulacao
 		double comp_med_fila = soma_temp_esp / s.getInstante();
-		// Tempo médio de atendimento no serviço
+		// Tempo medio de atendimento no servico
 		double utilizacao_serv = soma_temp_serv / s.getInstante();
 		// Apresenta resultados
-		System.out.println("Tempo médio de espera "+temp_med_fila);
-		System.out.println("Comp. médio da fila "+comp_med_fila);
-		System.out.println("Utilização do serviço "+utilizacao_serv);
-		System.out.println("Tempo de simulação "+s.getInstante()); // Valor actual
-		System.out.println("Número de clientes atendidos "+atendidos);
-		System.out.println("Número de clientes na fila "+fila.size()); // Valor actual
+		System.out.println("Tempo mï¿½dio de espera "+temp_med_fila);
+		System.out.println("Comp. mï¿½dio da fila "+comp_med_fila);
+		System.out.println("Utilizaï¿½ï¿½o do serviï¿½o "+utilizacao_serv);
+		System.out.println("Tempo de simulaï¿½ï¿½o "+s.getInstante()); // Valor actual
+		System.out.println("Nï¿½mero de clientes atendidos "+atendidos);
+		System.out.println("Nï¿½mero de clientes na fila "+fila.size()); // Valor actual
 	}
 
-    // Método que devolve o número de clientes atendidos no serviço até ao momento
+    // Metodo que devolve o nï¿½mero de clientes atendidos no serviï¿½o atï¿½ ao momento
     public int getAtendidos() {
         return atendidos;
     }
