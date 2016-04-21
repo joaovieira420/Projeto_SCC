@@ -84,12 +84,12 @@ public class Servico {
 		// Tempo medio de atendimento no servico
 		double utilizacao_serv = soma_temp_serv / s.getInstante();
 		// Apresenta resultados
-		System.out.println("Tempo m�dio de espera "+temp_med_fila);
-		System.out.println("Comp. m�dio da fila "+comp_med_fila);
-		System.out.println("Utiliza��o do servi�o "+utilizacao_serv/nAtendedores);
-		System.out.println("Tempo de simula��o "+s.getInstante()); // Valor actual
-		System.out.println("N�mero de clientes atendidos "+atendidos);
-		System.out.println("N�mero de clientes na fila "+fila.size()); // Valor actual
+		System.out.println("Tempo medio de espera "+temp_med_fila);
+		System.out.println("Comp. medio da fila "+comp_med_fila);
+		System.out.println("Utilizacao do servico "+utilizacao_serv/nAtendedores);
+		System.out.println("Tempo de simulacao "+s.getInstante()); // Valor actual
+		System.out.println("Numero de clientes atendidos "+atendidos);
+		System.out.println("Numero de clientes na fila "+fila.size()); // Valor actual
 	}
 
     // Metodo que devolve o n�mero de clientes atendidos no servi�o at� ao momento

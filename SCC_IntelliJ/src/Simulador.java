@@ -39,6 +39,7 @@ public class Simulador {
 		// Agendamento da primeira chegada
         // Se nao for feito, o simulador nao tem eventos para simular
 		insereEvento (new Chegada(instante, this, gasolina));
+		insereEvento (new Chegada(instante, this, gasoleo));
     }
 
         // programa principal

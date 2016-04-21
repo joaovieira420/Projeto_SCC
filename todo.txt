@@ -1,3 +1,3 @@
 para cada posto: n de atendedores, desvio, media, percentagem que vai ao gasóleo
 
-atualizar stats de gasoleo e loja
+atualizar e imprimir stats de gasoleo e loja
