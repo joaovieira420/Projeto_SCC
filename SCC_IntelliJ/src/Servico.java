@@ -32,10 +32,10 @@ public class Servico {
 		if (estado < nAtendedores) { // Se servico livre, IR ATE N NAO É BINARIO
 			estado ++;     // fica ocupado e
 			// agenda saida do cliente c para daqui a s.getMedia_serv() instantes
-			if (tipo == 0) {
-				s.insereEvento(new Transfere(s.getInstante()+s.getMedia_serv(), s, s.getGasolina()));
+			if (tipo == 0 || tipo == 1) {
+				s.insereEvento(new Transfere(s.getInstante()+s.getMedia_serv(), s, this));
 			} else {
-				s.insereEvento(new Saida(s.getInstante() + s.getMedia_serv(), s, s.getLoja()));
+				s.insereEvento(new Saida(s.getInstante() + s.getMedia_serv(), s, this));
 			}
 		}
 		else fila.addElement(c); // Se servico ocupado, o cliente vai para a fila de espera
@@ -51,10 +51,10 @@ public class Servico {
 			c = fila.firstElement();
 			fila.removeElementAt(0);
 			// agenda a sua saida para daqui a s.getMedia_serv() instantes
-			if (tipo == 0) {
-				s.insereEvento(new Transfere(s.getInstante()+s.getMedia_serv(), s, s.getGasolina()));
+			if (tipo == 0 || tipo == 1) {
+				s.insereEvento(new Transfere(s.getInstante()+s.getMedia_serv(), s, this));
 			} else {
-				s.insereEvento(new Saida(s.getInstante() + s.getMedia_serv(), s, s.getLoja()));
+				s.insereEvento(new Saida(s.getInstante() + s.getMedia_serv(), s, this));
 			}
 		}
 		return c;
@@ -86,7 +86,7 @@ public class Servico {
 		// Apresenta resultados
 		System.out.println("Tempo m�dio de espera "+temp_med_fila);
 		System.out.println("Comp. m�dio da fila "+comp_med_fila);
-		System.out.println("Utiliza��o do servi�o "+utilizacao_serv);
+		System.out.println("Utiliza��o do servi�o "+utilizacao_serv/nAtendedores);
 		System.out.println("Tempo de simula��o "+s.getInstante()); // Valor actual
 		System.out.println("N�mero de clientes atendidos "+atendidos);
 		System.out.println("N�mero de clientes na fila "+fila.size()); // Valor actual
