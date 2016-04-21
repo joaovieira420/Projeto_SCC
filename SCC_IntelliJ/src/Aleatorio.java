@@ -31,7 +31,7 @@ public class Aleatorio {
 			double mul = Math.sqrt(-2.0 * Math.log(w) / w);
 			spare = v2 * mul;
 			isSpareReady = true;
-			//return mean + stdDev * v1 * mul;
+			return mean + stdDev * v1 * mul;
 		}
 	}
 
