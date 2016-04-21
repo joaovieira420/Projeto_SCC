@@ -14,13 +14,13 @@ public class Aleatorio {
 
 
 
-	public static synchronized double[] getGaussian(double mean, double stdDev, int seed) {
+	public static synchronized double getGaussian(double mean, double stdDev, int seed) {
 		double spare = 0;
 		boolean isSpareReady = false;
 
 		if (isSpareReady) {
 			isSpareReady = false;
-			//return spare * stdDev + mean;
+			return spare * stdDev + mean;
 		} else {
 			double v1, v2, w;
 			do {

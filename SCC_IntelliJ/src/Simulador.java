@@ -27,7 +27,7 @@ public class Simulador {
 		// Inicializacao do relogio de simulacao
 		instante = 0;
 		// Criacao do servico
-		gasolina = new Servico (this, 2, 0); //isto é a gasolina
+		gasolina = new Servico (this, 3, 0); //isto é a gasolina
 
 		gasoleo = new Servico(this, 1, 0); //isto e o gasoleo
 
@@ -57,6 +57,8 @@ public class Simulador {
     // Metodo que actualiza os valores estatisticos do simulador
 	private void act_stats(){
 		gasolina.act_stats();
+		gasoleo.act_stats();
+		loja.act_stats();
 	}
 
     // Metodo que apresenta os resultados de simulacao finais
@@ -65,6 +67,8 @@ public class Simulador {
     	System.out.println("------- Resultados finais -------");
     	System.out.println();
 		gasolina.relat();
+		gasoleo.act_stats();
+		loja.act_stats();
 	}
 
     // Metodo executivo do simulador
@@ -76,7 +80,7 @@ public class Simulador {
 			e1 = (Evento)(lista.removeFirst());  // Retira primeiro evento (e o mais iminente) da lista de eventos
 			instante = e1.getInstante();         // Actualiza relogio de simulacao
 			act_stats();                         // Actualiza valores estatisticos
-			e1.executa();                 	// Executa evento
+			e1.executa();                    // Executa evento
 		};
 		relat();  // Apresenta resultados de simulacao finais
 	}
